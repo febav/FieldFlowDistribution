@@ -1,3 +1,50 @@
+%%
+%     GNU General Public License
+%   
+%     CollectorPressureDrop is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+%     CollectorPressureDrop is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%     GNU General Public License for more details.
+%     You should have received a copy of the GNU General Public License
+%     along with CollectorPressureDrop. If not, see <http://www.gnu.org/licenses/>.
+% 
+%     Author:
+%     Federico Bava
+%     PhD student at the Technical University of Denmark (DTU)
+%     febav@byg.dtu.dk
+%  
+%     Copyright (c) 2016 Federico Bava 
+%     Released under GNU GPL v3
+
+%%   FieldFlowModel_case3_2.m  solve for the Flow Rates in two Parallel Pipes 
+%
+%   This file computes the flow distribution in a solar collector field,
+%   consisting of two symmetrical subfields of 12 collector rows each.
+%   This is done by iteratively solving a set of nonlinear equations,
+%   where the coefficient matrix is function of the solution vector.
+%   Given an initial guess of the flow distribution Mold, the coefficient
+%   matrix AA can be determined and the solution of a linear system,
+%   AA(x)*x = BB, can be obtained. This process is continued until the user
+%   defined tolerance is reached or the number of iterations has exceeded.
+%   The structure of the matrix problem is  like:
+%
+%   (M1new)   (   1         1         1         1         1      | Mtot )
+%   (M2new)   ( Y1*M1old -Y2*M2old    0         0         0      |  0   )
+%   (M3new) = (   0       Y2*M2old -Y3*M3old    0         0      |  0   )
+%   (M4new)   (   0         0       Y3*M3old -Y4*M4old    0      |  0   )
+%   (M5new)   (   0         0         0       Y4*M4old -Y5*M5old |  0   )
+%
+%   where   M is the mass flow rate
+%           tot denotes the total flow rate across the collector
+%           Y is pressure drop resistance coefficient
+%           1,2,...5 denote the hydraulic path
+%           new denotes the flow rate computed at the present iteration
+%           old denotes the flow rate computed at the previous iteration
+
 clear all
 close all
 clc
